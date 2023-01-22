@@ -324,6 +324,9 @@ const ThoughtState = () => {
         </Row>
 
         <ThoughtHistory thoughts={currentState?.thoughts} />
+        <div>
+          Code at https://github.com/matthewlouisbrockman/SelfReviewingAgent
+        </div>
       </LeftArea>
       <Chatbot
         conversation={conversation}
