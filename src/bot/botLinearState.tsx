@@ -58,7 +58,7 @@ export class Bot {
     return { state: this.memory, message: '' };
   };
 
-  doThought = async (): Promise<BotState> => {
+  doThought = async (apikey: string = ''): Promise<BotState> => {
     console.log('[doThought] this.nextActionType', this.nextActionType);
 
     if (this.nextActionType === 'think') {
@@ -66,7 +66,7 @@ export class Bot {
 
       const recentHistory = this.getRecentHistory(20);
 
-      const thoughtData = await linearExpander(recentHistory);
+      const thoughtData = await linearExpander(recentHistory, apikey);
 
       console.log('thoughtData', thoughtData);
       if (thoughtData.error) {
@@ -84,7 +84,8 @@ export class Bot {
     if (this.nextActionType === 'summarize') {
       this.nextActionType = 'plan';
       const thoughtData = await linearSummarizer(
-        JSON.stringify(this.memory.state)
+        JSON.stringify(this.memory.state),
+        apikey
       );
 
       if (thoughtData.error) {
@@ -99,7 +100,10 @@ export class Bot {
       return { state: this.memory, lastPrompt: this.lastPrompt };
     }
 
-    const planData = await linearPlanner(JSON.stringify(this.memory.state));
+    const planData = await linearPlanner(
+      JSON.stringify(this.memory.state),
+      apikey
+    );
 
     if (planData.error) {
       return { state: this.memory, message: planData.error };

@@ -76,6 +76,10 @@ const TaskQueuedNotification = styled.div`
   color: red;
 `;
 
+const API_KEY_AREA = styled.input`
+  margin-right: 10px;
+`;
+
 const bot = new Bot();
 const ThoughtState = () => {
   const [currentState, setCurrentState] = useState<any>({});
@@ -85,6 +89,7 @@ const ThoughtState = () => {
   const [autoThink, setAutoThink] = useState<boolean>(false);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [taskQueued, setTaskQueued] = useState<boolean>(false);
+  const [apikey, setApikey] = useState<string>('');
 
   const handleInputText = async (currentInput: string) => {
     if (!currentInput) return;
@@ -116,7 +121,7 @@ const ThoughtState = () => {
   };
   const handleThink = async (autoOn: boolean = false) => {
     setIsProcessing(true);
-    const response = await bot.doThought();
+    const response = await bot.doThought(apikey);
     setIsProcessing(false);
     setCurrentState(response.state);
     setLastPrompt(response.lastPrompt || '');
@@ -175,7 +180,12 @@ const ThoughtState = () => {
           {isProcessing && (
             <TaskQueuedNotification>Processing Request</TaskQueuedNotification>
           )}
-
+          <API_KEY_AREA
+            type="password"
+            placeholder="OPENAI API KEY HERE"
+            onChange={(e) => setApikey(e.target.value)}
+            value={apikey}
+          ></API_KEY_AREA>
           <TiggleDisplay
             label="Think Rate"
             currentValue={thinkRate}

@@ -36,9 +36,12 @@ Out:
 `;
 };
 
-export const linearPlanner = async (idea: string): Promise<any> => {
+export const linearPlanner = async (
+  idea: string,
+  key: string
+): Promise<any> => {
   const newPrompt = planFromPriorPrmopt(idea);
-  const data = await callOpenAI({ text: newPrompt, temperature: 0.2 });
+  const data = await callOpenAI({ text: newPrompt, temperature: 0.2, key });
   if (data.error) {
     return data;
   }

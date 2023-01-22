@@ -43,9 +43,16 @@ Out:
 [thought] I think`;
 };
 
-export const linearExpander = async (idea: string): Promise<any> => {
+export const linearExpander = async (
+  idea: string,
+  apikey: string = ''
+): Promise<any> => {
   const newPrompt = evalPriorPrompt(idea);
-  const data = await callOpenAI({ text: newPrompt, temperature: 0.2 });
+  const data = await callOpenAI({
+    text: newPrompt,
+    temperature: 0.2,
+    key: apikey,
+  });
   if (data.error) {
     return data;
   }
