@@ -31,7 +31,7 @@ const plan = () =>:aiMentalState => {
 }
 
 >> ai.state = ${idea}
->> console.plan(think())
+>> console.log(plan())
 Out:
 `;
 };
