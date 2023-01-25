@@ -1,3 +1,5 @@
+![flowchart](./imgs/flowchart.png)
+
 ### what's this self awareness thing
 
 So there was this tweet, https://twitter.com/goodside/status/1610879587319177216, about self awareness and i realized i didn't know what it was or if it was important, so figured i'd make this repo to figure out wtf it was and what happened if we gave it to an agent.
