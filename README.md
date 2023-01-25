@@ -1,5 +1,13 @@
 ![flowchart](./imgs/flowchart.png)
 
+### Agent-Chatbot
+
+This chatbot does a couple things that might be interesting. First, the prompts are kind of cool - it utilizes text-davinci-003's ability to guess code output well (see https://engineering.hyperwriteai.com/hallucinating-functions-for-chat for more on that). Also, instead of just call-response like a normal chatbot, it has a persistant state and just edits it. This can probably be built out a lot and that's probably interesting.
+
+One of the things many people have found with GPT is it does better when it thinks through a problem. E.g. in the original GPT paper, they thought it couldn't do better than chance on Word in Context, but it turns out if you have it do intermediary steps it can. Additionally, chunking information into sections via summarization can help - although what chunking means is a bit ambiguous. For instance, if you have n-digit integer arithmetic, chunking it into sections with commas improves it but is that chunking or something else? I don't know. But it's interesting.
+
+Anyway, this is kind of a step in playing with these concepts in a persistent agent and I'm sure there's going to be a lot more things like this now that the tech is widely available.
+
 ### what's this self awareness thing
 
 So there was this tweet, https://twitter.com/goodside/status/1610879587319177216, about self awareness and i realized i didn't know what it was or if it was important, so figured i'd make this repo to figure out wtf it was and what happened if we gave it to an agent.
