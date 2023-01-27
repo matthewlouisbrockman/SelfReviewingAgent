@@ -37,7 +37,7 @@ export const callOpenAI = async ({
       {
         model: 'text-davinci-003',
         prompt: text,
-        max_tokens: 500,
+        max_tokens: 1500,
         temperature: 0,
         stop: ['\n>>'],
         ...props,

@@ -1,6 +1,6 @@
 import { callOpenAI } from '../models/callOpenai';
 
-const evalPriorPrompt = (idea: string): string => {
+const evalPriorPrompt = (idea: string, plans: string): string => {
   return `//NOTE: THIS IS MEANT FOR PYTHON CONVERSION SO KEYS NEED TO BE IN QUOTES ("KEY": "VALUE")
 interface aiMentalState{
 "currentThought": string, // copies the prior mental state, then assesses the prior mental state and assesses what might happen next and plans how things might go.. 
@@ -37,6 +37,7 @@ const think = () =>:string => {
   return(\`[thought] I think I last said \${ai.lastAIOutput}. I should \${ai.recentUserInput() ? ai.newIdeasOnRecievedInput(currentIdeas) : ai.newIdeasAwaitingUserInput(currentIdeas)}\`)
 }
 
+>> currentPlans = \`${plans}\` //current things the AI is thinking about although they might have already been done
 >> currentHistory = \`${idea}\`
 >> console.log(think())
 Out:
@@ -45,9 +46,13 @@ Out:
 
 export const linearExpander = async (
   idea: string,
+  plans: any,
   apikey: string = ''
 ): Promise<any> => {
-  const newPrompt = evalPriorPrompt(idea);
+  const newPrompt = evalPriorPrompt(
+    idea.slice(-2000),
+    JSON.stringify(plans).slice(-1000)
+  );
   const data = await callOpenAI({
     text: newPrompt,
     temperature: 0.2,

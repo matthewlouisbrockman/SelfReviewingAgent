@@ -66,7 +66,11 @@ export class Bot {
 
       const recentHistory = this.getRecentHistory(20);
 
-      const thoughtData = await linearExpander(recentHistory, apikey);
+      const thoughtData = await linearExpander(
+        recentHistory,
+        this.memory.state.possibleActions,
+        apikey
+      );
 
       console.log('thoughtData', thoughtData);
       if (thoughtData.error) {
@@ -104,8 +108,6 @@ export class Bot {
       JSON.stringify(this.memory.state),
       apikey
     );
-
-    console.log('planData', planData);
 
     if (planData.error) {
       return { state: this.memory, message: planData.error };
