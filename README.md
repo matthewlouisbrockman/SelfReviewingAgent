@@ -2,6 +2,11 @@
 
 ### Agent-Chatbot
 
+Here's a youtube demo! 
+
+[![Youtube Demo](https://img.youtube.com/vi/kVbxkm4sq3w/0.jpg)](https://www.youtube.com/watch?v=kVbxkm4sq3w)
+
+
 Hmm, so I might have thought this was doing better than it was. I do want to move it to v3 though, turns out the different parts of the cycle weren't doing as well as I thought so had to go in and mess with them. For some reason it doesn't like to parse the input object without knowing what it is (and potentially that was an issue, i set the output limit to 500 tokens to save on compute and that might have been too little? But also when playing with it after the fact realized the planner parser kind of wasn't doing what I wanted.) I think the planning is somewhat fixed now but definitely need to go in and brain surgery why it isn't picking up on the format the way it's supposed to - I've been using TypeScript interfaces elsewhere for formats and it normally works fine, although possibly it has to do with a string:list comparison or something and that's gunking things up. Anyway, seems to be back to kind of working, can do poems again, but ASDF these are a pain to get consistent.
 
 This chatbot does a couple things that might be interesting. First, the prompts are kind of cool - it utilizes text-davinci-003's ability to guess code output well (see https://engineering.hyperwriteai.com/hallucinating-functions-for-chat for more on that). Also, instead of just call-response like a normal chatbot, it has a persistant state and just edits it. This can probably be built out a lot and that's probably interesting.
