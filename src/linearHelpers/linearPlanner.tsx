@@ -2,7 +2,7 @@ import { callOpenAI } from '../models/callOpenai';
 
 const planFromPriorPrmopt = (idea: string): string => {
   return `interface aiMentalState {
-"userIntent": string, // the user's intent, e.g. "I want to know the capital of estonia"
+"userIntent": string, // the user's intent, e.g. "They want to know the capital of estonia" or "they haven't said anything", or "They want to write a blog post"
 "possibleActions": [ // the actions that will accomplish the intent in currentThought, most relevant 2-3 actions
   {
     "print": string, // what the bot should say to accomplish its goal (it makes all the assumptions it needs and knows how to do many things)
