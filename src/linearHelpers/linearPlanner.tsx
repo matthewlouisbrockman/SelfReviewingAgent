@@ -3,7 +3,6 @@ import { callOpenAI } from '../models/callOpenai';
 const planFromPriorPrmopt = (idea: string): string => {
   return `//NOTE: THIS IS MEANT FOR PYTHON CONVERSION SO KEYS NEED TO BE IN QUOTES ("KEY": "VALUE")
 interface aiMentalState{
-"currentThought": string, // DO NOT CHANGE THIS
 "possibleActions": [ // actions the user might do to accopmlish the currentThought
   {
     "print": string, // the specific string to say to the user
@@ -32,8 +31,7 @@ const plan = () =>:aiMentalState => {
 
 >> ai.state = ${idea}
 >> console.log('Out: ' + plan())
-Out:
-`;
+Out:`;
 };
 
 export const linearPlanner = async (
