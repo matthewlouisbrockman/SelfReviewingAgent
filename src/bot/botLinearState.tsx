@@ -27,7 +27,11 @@ export class Bot {
       history: [],
     };
     this.nextActionType = 'think';
-    this.addToHistory('I think I should say hello', 'bot', 'thought');
+    this.addToHistory(
+      'This is a new conversation. I can start by asking if anyone is around and otherwise will just contemplate my existance.',
+      'I',
+      'thought'
+    );
   }
 
   addToHistory = (text: string, agent: string, mode: string): void => {
@@ -76,7 +80,7 @@ export class Bot {
       }
 
       this.lastPrompt = thoughtData.prompt;
-      this.addToHistory(thoughtData.thought, 'ai', 'thought');
+      this.addToHistory(thoughtData.thought, 'I', 'thought');
       const last10Events = this.getRecentHistory();
       this.memory.state.currentThought = last10Events;
 
@@ -95,7 +99,7 @@ export class Bot {
       }
 
       this.lastPrompt = thoughtData.prompt;
-      this.addToHistory(thoughtData.thought, 'ai', 'thought');
+      this.addToHistory(thoughtData.thought, 'I', 'thought');
       const last10Events = this.getRecentHistory();
       this.memory.state.currentThought = last10Events;
 
@@ -104,7 +108,7 @@ export class Bot {
 
     const parsableData = `{
       //chat history is the history numbered from oldest to newest
-      //user inputs (if it exists) starts with [user], the ai thoughts and statements start with [ai]
+      //user inputs (if it exists) starts with [user], the ai thoughts and statements start with [I]
       "chatHistory": "${this.getRecentHistory()}",
       "possibleActions": ${JSON.stringify(this.memory.state.possibleActions)},
       "actionToTake": ${JSON.stringify(this.memory.state.actionToTake)},
@@ -135,7 +139,7 @@ export class Bot {
       };
 
       if (action.print) {
-        this.addToHistory(`I said: "${action.print}"`, 'ai', 'said');
+        this.addToHistory(`I said: "${action.print}"`, 'I', 'said');
         const last10Events = this.getRecentHistory();
         this.memory.state.currentThought = last10Events;
 
