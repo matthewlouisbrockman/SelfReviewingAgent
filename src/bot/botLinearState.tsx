@@ -59,10 +59,8 @@ export class Bot {
   };
 
   doThought = async (apikey: string = ''): Promise<BotState> => {
-    console.log('[doThought] this.nextActionType', this.nextActionType);
-
     if (this.nextActionType === 'think') {
-      this.nextActionType = 'summarize';
+      this.nextActionType = Math.random() > 0.5 ? 'summarize' : 'plan';
 
       const recentHistory = this.getRecentHistory(20);
 
@@ -72,13 +70,12 @@ export class Bot {
         apikey
       );
 
-      console.log('thoughtData', thoughtData);
       if (thoughtData.error) {
         return { state: this.memory, message: thoughtData.error };
       }
 
       this.lastPrompt = thoughtData.prompt;
-      this.addToHistory(`I think: "${thoughtData.thought}"`, 'bot', 'thought');
+      this.addToHistory(thoughtData.thought, 'bot', 'thought');
       const last10Events = this.getRecentHistory();
       this.memory.state.currentThought = last10Events;
 
@@ -137,8 +134,6 @@ export class Bot {
       };
 
       if (action.print) {
-        console.log('ACTION', action);
-
         this.addToHistory(`I said: "${action.print}"`, 'bot', 'said');
         const last10Events = this.getRecentHistory();
         this.memory.state.currentThought = last10Events;

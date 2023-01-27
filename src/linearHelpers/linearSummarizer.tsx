@@ -1,33 +1,24 @@
 import { callOpenAI } from '../models/callOpenai';
 
 const evalPriorPrompt = (idea: string): string => {
-  return `//NOTE: THIS IS MEANT FOR PYTHON CONVERSION SO KEYS NEED TO BE IN QUOTES ("KEY": "VALUE")
-interface aiMentalState{
-"currentThought": string, // copies the prior mental state, then assesses the prior mental state and assesses what might happen next and plans how things might go.. 
-"possibleActions": [ //DO NOT CHANGE FROM INPUT; these are actions the bot *might* do
-  {
-    "print": string,
-    "confidence": number
-  }] | [],
-"actionToTake": [ //DO NOT CHANGE FROM INPUT; these are actions the bot *should* do
-  {
-    "print": string,
-    "confidence": number
-  }] | []
-  ]
-"takenActions": [ //DO NOT CHANGE FROM INPUT; these are actions the bot *has* done
-  {
-    "print": string,
-    "confidence": number
-  }] | []
-  ]
-}
-  
-const summarizer = () =>:string => {
+  return `const summarizer = () =>:string => {
   /* 
-    returns a summary of how the conversation is going, the last thing it said, the last thing the user said, what it's been thinking about, if there's repetition or the conversation is going in circles, etc.
+    returns a summary of how the conversation is going, the last thing it said, the last thing the user said, what it's been thinking about. If there's been repition, it should evaluate how to get out of the loops
   */
-  return(\`[thought]: I was thinking \${ai.summarize(currentIdeas)}\`. This means \${ai.evaluate(currentIdeas)})\`)
+
+  lastUserRequest = ai.lastUserRequest()
+
+  summary = ai.summarize(currentIdeas)
+
+  //if the AI is repeating itself or the user hasn't responded to the last thing it said, it should evaluate how to get out of the loop
+  if (utils.isRepeating(currentIdeas) || !currentIdeas.answers(lastUserRequest){
+    solution = ai.howToGetOutOfLoop(currentIdeas)
+    return(\`[thought]: I was thinking \${summary}. I should \${solution}\`)
+  }
+  //otherwise, it just returns a summary of the conversation so far
+  else {
+    return(\`[thought]: I was thinking \${summary}\`)
+  }
 }
 
 >> ai.state = ${idea}
@@ -49,7 +40,7 @@ export const linearSummarizer = async (
   if (data.error) {
     return data;
   }
-  const outputText = `The TLDR of the previous lines is:${data.choices[0].text}`;
+  const outputText = `So far: ${data.choices[0].text}`;
   return {
     thought: outputText,
     prompt: `${newPrompt}...\n${outputText}`,

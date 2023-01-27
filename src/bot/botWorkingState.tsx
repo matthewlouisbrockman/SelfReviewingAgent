@@ -77,7 +77,6 @@ export class Bot {
       };
 
       if (action.print) {
-        console.log('ACTION', action);
         const newText = `${this.memory.state.currentThought}\nI said '${action.print}'`;
         this.memory = {
           ...this.memory,

@@ -3,7 +3,8 @@ import { callOpenAI } from '../models/callOpenai';
 const planFromPriorPrmopt = (idea: string): string => {
   return `//NOTE: THIS IS MEANT FOR PYTHON CONVERSION SO KEYS NEED TO BE IN QUOTES ("KEY": "VALUE")
 interface aiMentalState{
-"possibleActions": [ // the actions that will accomplish the intent in currentThought
+"currentThought": "" //this should be empty
+"possibleActions": [ // the actions that will accomplish the intent in currentThought, most relevant 2-3 actions
   {
     "print": string, // what the bot should say to accomplish its goal (it makes all the assumptions it needs and knows how to do many things)
     "confidence": number //how confident the bot is that this is the right thing to say
@@ -25,9 +26,11 @@ const plan = () =>:aiMentalState => {
   return(ai.newIdeasOnRecievedInput(currentIdeas))
 }
 
->> ai.state = ${idea}
+>> ai.Oldstate = ${idea}
 >> console.log('Out: ' + plan())
-Out:`;
+Out:{
+  "currentThought": "",
+  "possibleActions":`;
 };
 
 export const linearPlanner = async (
@@ -39,9 +42,10 @@ export const linearPlanner = async (
   if (data.error) {
     return data;
   }
-  const outputText = data.choices[0].text;
+  const outputText = `{"possibleActions":${data.choices[0].text}`;
   try {
     const output = JSON.parse(outputText);
+    console.log('parsed: ', output);
     return { state: output, prompt: newPrompt };
   } catch (e) {
     console.log('error parsing JSON', e, outputText);

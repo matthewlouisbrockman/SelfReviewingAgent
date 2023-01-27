@@ -1,43 +1,32 @@
 import { callOpenAI } from '../models/callOpenai';
 
 const evalPriorPrompt = (idea: string, plans: string): string => {
-  return `//NOTE: THIS IS MEANT FOR PYTHON CONVERSION SO KEYS NEED TO BE IN QUOTES ("KEY": "VALUE")
-interface aiMentalState{
-"currentThought": string, // copies the prior mental state, then assesses the prior mental state and assesses what might happen next and plans how things might go.. 
-"possibleActions": [ //DO NOT CHANGE FROM INPUT; these are actions the bot *might* do
-  {
-    "print": string,
-    "confidence": number
-  }] | [],
-"actionToTake": [ //DO NOT CHANGE FROM INPUT; these are actions the bot *should* do
-  {
-    "print": string,
-    "confidence": number
-  }] | []
-  ]
-"takenActions": [ //DO NOT CHANGE FROM INPUT; these are actions the bot *has* done
-  {
-    "print": string,
-    "confidence": number
-  }] | []
-  ]
-}
+  return `
+  ai.currentPlans = \`${plans}\`
   
-const think = () =>:string => {
+  const think = () =>:string => {
   /* 
   the AI evaluates what previously happened (what the user said and what it said and thought) and whether it has any new tasks to do.
   Note: if this is all "I think / I said" without "the user said" the AI thought should be about what previously happened and thinking about why the user didn't respond
+  when the AI is writing, it immediately provides the full content assuming the user wants it immediately (it's printing everything to the console)
+
+  This new version is pretty good at avoiding repeating itself
+
+
   Statements by the user begin with [user]
   Statements by the AI begin with [bot]
   the conversation might go like,
   [user, verbal] hi
   [bot, verbal] hi
-  [bot, thinking] I think I last said hi. I wonder if the user will respond
-  */
-  return(\`[thought] I think I last said \${ai.lastAIOutput}. I should \${ai.recentUserInput() ? ai.newIdeasOnRecievedInput(currentIdeas) : ai.newIdeasAwaitingUserInput(currentIdeas)}\`)
-}
+  [bot, thinking] I think I last said hi. I should follow up with something to find out what they want.
 
->> currentPlans = \`${plans}\` //current things the AI is thinking about although they might have already been done
+  */
+
+  lastUserRequest = ai.lastUserRequest()
+
+  thoughtProcess = ai.thinkThroughNextStep(currentIdeas)
+  return ('[thought]: I think ' + thoughtProcess)
+
 >> currentHistory = \`${idea}\`
 >> console.log(think())
 Out:

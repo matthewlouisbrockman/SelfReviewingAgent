@@ -15,7 +15,6 @@ let lastOpenAITime = -1;
 
 // default key is OPENAI_API_KEY
 const DEFAULT_OPEANI_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-console.log('DEFAULT_OPEANI_KEY', DEFAULT_OPEANI_KEY?.length);
 
 export const callOpenAI = async ({
   text,
@@ -28,8 +27,6 @@ export const callOpenAI = async ({
     return { error: 'Too many calls to OpenAI' };
   }
   lastOpenAITime = Date.now();
-
-  console.log('callOpenAI', text);
 
   try {
     const res = await axios.post(
@@ -49,7 +46,6 @@ export const callOpenAI = async ({
         },
       }
     );
-    console.log('res.data', res.data);
 
     return res.data;
   } catch (error) {
