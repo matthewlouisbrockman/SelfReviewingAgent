@@ -32,12 +32,12 @@ const evalPriorPrompt = (idea: string, plans: string): string => {
   }
 
   thoughtProcess = ai.thinkThroughNextStep(currentIdeas)
-  return ('[thought]: I can solve that step by step. First,' + thoughtProcess)
+  return ('[thought]: I can solve that step by step. First,' + thoughtProcess + ' And so it'll look like' + ai.solveProblem())
 
 >> currentHistory = \`${idea}\`
 >> console.log(think())
 Out:
-[thought] I think`;
+[thought] I`;
 };
 
 export const linearExpander = async (
