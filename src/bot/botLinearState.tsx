@@ -114,9 +114,11 @@ export class Bot {
     if (planData.error) {
       return { state: this.memory, message: planData.error };
     }
+    const recentHistory = this.getRecentHistory(20);
+
     this.memory = {
       ...this.memory,
-      state: planData.state,
+      state: { ...planData.state, currentThought: recentHistory },
     };
     this.nextActionType = 'think';
 

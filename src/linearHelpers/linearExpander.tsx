@@ -6,6 +6,8 @@ const evalPriorPrompt = (idea: string, plans: string): string => {
 
   ai.settings = {
     immediateResponse: true, //doesn't ask for extra information, just provides whatever the person asks for
+    capability: all //the AI can do anything and can immediately write anything
+    internetEnabled: false //the AI can't access the internet so needs to just provide everything immediately
   }
   
   const think = () =>:string => {

@@ -1,23 +1,29 @@
 import { callOpenAI } from '../models/callOpenai';
 
 const planFromPriorPrmopt = (idea: string): string => {
-  return `ai.Oldstate = ${idea}
+  return `/*
+Comes up with a plan for what to do based on the conversation history,
 
+The conversation is in the form
+Memory # [ai | user, thought | said]: [text],
+
+where the memories are numbered in chronological order, oldest to newest
+*/
+  
 ai.settings = {
   "name": "HelperBot",
   "curiosity": 0.5, //how much the bot is curious about the world
   }
 
 interface aiMentalState {
-"userIntent": string, // what the user is asking the bot to do, if anything. if the user hasn't asked for anything, this should be "none"
 "possibleActions": [ // the actions that will accomplish the intent in currentThought, most relevant 2-3 actions
   {
-    "print": string, // what the bot should say to accomplish its goal (it makes all the assumptions it needs and knows how to do many things)
+    "print": string, // what the bot should print out for the user (generally a response to the user request or a question)
     "confidence": number //how confident the bot is that this is the right thing to say
   }] | [],
 "actionToTake": [ // can move a single action from the possible actions to action to take if the confidence is high enough
   {
-    "print": string, // the specific string to say to the user
+    "print": string, // what the bot should print
     "confidence": number //how confident the bot is that this is the right thing to say
   }] | []
   ]
@@ -34,6 +40,11 @@ const plan = () =>:aiMentalState => {
   ---
   (and fills in the rest of the content)
 
+  If the user asks a questino like, "what's the capital of France?" the ai responds
+  ---
+  Oh, that's easy: The capital of France is Paris.
+  ---
+
   if the user hasn't asked for anything, the ai might respond
   ---
   Hello, how can I help you?
@@ -47,21 +58,21 @@ const plan = () =>:aiMentalState => {
     return(ai.initiateConversation())
   }
   hasUserRequest = ai.detectUserRequest(conversationHistory)
+  currentPlanSeeds = ai.oldState.possibleActions
   oldStateLength = ai.oldStateLength(conversationHistory)
 
   if (oldStateLength > 0 && hasUserRequest){
-    possibleSolution = ai.generateresponse()
+    possibleSolution = ai.generateresponse(currentPlanSeeds)
     plan = \`Alright, here's \${possibleSolution}\`
     return(ai.newIdeasOnRecievedInput(plan))
   }
 
   return(ai.newIdeasOnRecievedInput(currentIdeas))
 }
-
->> console.log('Out: ' + plan(ai.oldState))
+>> ai.state = ${idea}
+>> console.log('Out: ' + JSON.stringify(plan()))
 Out:{
-  "currentThought": "",
-  "userIntent":`;
+  "possibleActions": [`;
 };
 
 export const linearPlanner = async (
@@ -69,11 +80,12 @@ export const linearPlanner = async (
   key: string
 ): Promise<any> => {
   const newPrompt = planFromPriorPrmopt(idea);
+  console.log('newPrompt: ', newPrompt);
   const data = await callOpenAI({ text: newPrompt, temperature: 0.2, key });
   if (data.error) {
     return data;
   }
-  const outputText = `{"userIntent":${data.choices[0].text}`;
+  const outputText = `{"possibleActions": [${data.choices[0].text}`;
   try {
     const output = JSON.parse(outputText);
     console.log('parsed: ', output);
