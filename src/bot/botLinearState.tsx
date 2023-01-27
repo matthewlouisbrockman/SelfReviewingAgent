@@ -27,6 +27,7 @@ export class Bot {
       history: [],
     };
     this.nextActionType = 'think';
+    this.addToHistory('I think I should say hello', 'bot', 'thought');
   }
 
   addToHistory = (text: string, agent: string, mode: string): void => {

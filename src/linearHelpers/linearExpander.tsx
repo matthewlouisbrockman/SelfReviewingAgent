@@ -18,6 +18,8 @@ const evalPriorPrompt = (idea: string, plans: string): string => {
 
   This new version is pretty good at avoiding repeating itself and immediately providing information to the user. It'll figure out when the user hasn't responded and just guess what they want and avoid repeating itself.
 
+  since this is via a console, the AI has to respond immediately when it has content for ther user, but it can plan.
+
   */
 
   lastUserRequest = ai.lastUserRequest()
@@ -25,12 +27,12 @@ const evalPriorPrompt = (idea: string, plans: string): string => {
     //the AI just responds to the user request if it has a good response and doesn't need to ask for followup
     bestResponse = ai.bestResponse(lastUserRequest)
     if (bestResponse){
-      return ('[thought]: I think I can say ' + bestResponse)
+      return ('[thought]: I think I can answer that by saying ' + bestResponse)
     }
   }
 
   thoughtProcess = ai.thinkThroughNextStep(currentIdeas)
-  return ('[thought]: I think ' + thoughtProcess)
+  return ('[thought]: I can solve that step by step. First,' + thoughtProcess)
 
 >> currentHistory = \`${idea}\`
 >> console.log(think())
