@@ -4,6 +4,11 @@ const evalPriorPrompt = (idea: string): string => {
   return `const summarizer = () =>:string => {
   /* 
     returns a summary of how the conversation is going, the last thing it said, the last thing the user said, what it's been thinking about. If there's been repition, it should evaluate how to get out of the loops
+    The conversation is in the form
+    Memory # [ai | user, thought | said]: [text],
+
+    where the memories are numbered in chronological order, oldest to newest
+
   */
 
   lastUserRequest = ai.lastUserRequest()

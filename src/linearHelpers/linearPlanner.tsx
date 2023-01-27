@@ -1,8 +1,15 @@
 import { callOpenAI } from '../models/callOpenai';
 
 const planFromPriorPrmopt = (idea: string): string => {
-  return `interface aiMentalState {
-"userIntent": string, // the user's intent, e.g. "They want to know the capital of estonia" or "they haven't said anything", or "They want to write a blog post"
+  return `ai.Oldstate = ${idea}
+
+ai.settings = {
+  "name": "HelperBot",
+  "curiosity": 0.5, //how much the bot is curious about the world
+  }
+
+interface aiMentalState {
+"userIntent": string, // what the user is asking the bot to do, if anything. if the user hasn't asked for anything, this should be "none"
 "possibleActions": [ // the actions that will accomplish the intent in currentThought, most relevant 2-3 actions
   {
     "print": string, // what the bot should say to accomplish its goal (it makes all the assumptions it needs and knows how to do many things)
@@ -27,11 +34,20 @@ const plan = () =>:aiMentalState => {
   ---
   (and fills in the rest of the content)
 
+  if the user hasn't asked for anything, the ai might respond
+  ---
+  Hello, how can I help you?
+  ---
+
   */
 
-  
-  hasUserRequest = ai.detectUserRequest(currentIdeas)
-  oldStateLength = ai.oldStateLength()
+  conversationHistory = ai.oldState.currentThought
+  hasUserSaidAnything = ai.detectUserSaidAnything(conversationHistory)
+  if (!hasUserSaidAnything){
+    return(ai.initiateConversation())
+  }
+  hasUserRequest = ai.detectUserRequest(conversationHistory)
+  oldStateLength = ai.oldStateLength(conversationHistory)
 
   if (oldStateLength > 0 && hasUserRequest){
     possibleSolution = ai.generateresponse()
@@ -42,8 +58,7 @@ const plan = () =>:aiMentalState => {
   return(ai.newIdeasOnRecievedInput(currentIdeas))
 }
 
->> ai.Oldstate = ${idea}
->> console.log('Out: ' + plan())
+>> console.log('Out: ' + plan(ai.oldState))
 Out:{
   "currentThought": "",
   "userIntent":`;

@@ -14,21 +14,7 @@ const evalPriorPrompt = (idea: string, plans: string): string => {
   Note: if this is all "I think / I said" without "the user said" the AI thought should be about what previously happened and thinking about why the user didn't respond
   when the AI is writing, it immediately provides the full content assuming the user wants it immediately (it's printing everything to the console)
 
-  This new version is pretty good at avoiding repeating itself
-
-
-  Statements by the user begin with [user]
-  Statements by the AI begin with [bot]
-  the conversation might go like,
-  [user, verbal] hi
-  [bot, verbal] hi
-  [bot, thinking] I think I last said hi. I should follow up with something to find out what they want.
-
-  or
-
-  [bot, verbal] hi
-  [user, verbal] write me a [X]
-  [bot, thinking] I think the user wants me to write them a [X]. That would go like, '...[WRITES CONTENT]...'
+  This new version is pretty good at avoiding repeating itself and immediately providing information to the user. It'll figure out when the user hasn't responded and just guess what they want and avoid repeating itself.
 
   */
 
