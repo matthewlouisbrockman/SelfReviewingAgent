@@ -40,7 +40,7 @@ export const linearSummarizer = async (
   if (data.error) {
     return data;
   }
-  const outputText = `So far: ${data.choices[0].text}`;
+  const outputText = data.choices[0].text;
   return {
     thought: outputText,
     prompt: `${newPrompt}...\n${outputText}`,

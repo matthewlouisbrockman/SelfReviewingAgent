@@ -94,7 +94,7 @@ export class Bot {
       }
 
       this.lastPrompt = thoughtData.prompt;
-      this.addToHistory(`I think: "${thoughtData.thought}"`, 'bot', 'thought');
+      this.addToHistory(thoughtData.thought, 'bot', 'thought');
       const last10Events = this.getRecentHistory();
       this.memory.state.currentThought = last10Events;
 
@@ -109,13 +109,6 @@ export class Bot {
     if (planData.error) {
       return { state: this.memory, message: planData.error };
     }
-    this.addToHistory(
-      planData?.state?.intent
-        ? `I think: I can say something about ${planData?.state?.intent}`
-        : 'I think: I do not know what to think',
-      'bot',
-      'thought'
-    );
     this.memory = {
       ...this.memory,
       state: planData.state,

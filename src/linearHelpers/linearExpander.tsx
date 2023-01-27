@@ -3,6 +3,10 @@ import { callOpenAI } from '../models/callOpenai';
 const evalPriorPrompt = (idea: string, plans: string): string => {
   return `
   ai.currentPlans = \`${plans}\`
+
+  ai.settings = {
+    immediateResponse: true, //doesn't ask for extra information, just provides whatever the person asks for
+  }
   
   const think = () =>:string => {
   /* 
@@ -20,9 +24,22 @@ const evalPriorPrompt = (idea: string, plans: string): string => {
   [bot, verbal] hi
   [bot, thinking] I think I last said hi. I should follow up with something to find out what they want.
 
+  or
+
+  [bot, verbal] hi
+  [user, verbal] write me a [X]
+  [bot, thinking] I think the user wants me to write them a [X]. That would go like, '...[WRITES CONTENT]...'
+
   */
 
   lastUserRequest = ai.lastUserRequest()
+  if (lastUserRequest){
+    //the AI just responds to the user request if it has a good response and doesn't need to ask for followup
+    bestResponse = ai.bestResponse(lastUserRequest)
+    if (bestResponse){
+      return ('[thought]: I think I can say ' + bestResponse)
+    }
+  }
 
   thoughtProcess = ai.thinkThroughNextStep(currentIdeas)
   return ('[thought]: I think ' + thoughtProcess)
