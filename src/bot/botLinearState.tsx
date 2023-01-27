@@ -105,10 +105,18 @@ export class Bot {
       apikey
     );
 
+    console.log('planData', planData);
+
     if (planData.error) {
       return { state: this.memory, message: planData.error };
     }
-
+    this.addToHistory(
+      planData?.state?.intent
+        ? `I think: I can say something about ${planData?.state?.intent}`
+        : 'I think: I do not know what to think',
+      'bot',
+      'thought'
+    );
     this.memory = {
       ...this.memory,
       state: planData.state,

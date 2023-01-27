@@ -84,7 +84,7 @@ const bot = new Bot();
 const ThoughtState = () => {
   const [currentState, setCurrentState] = useState<any>({});
   const [conversation, setConversation] = useState<any>([]);
-  const [thinkRate, setThinkRate] = useState<number>(10);
+  const [thinkRate, setThinkRate] = useState<number>(5);
   const [lastPrompt, setLastPrompt] = useState<string>('');
   const [autoThink, setAutoThink] = useState<boolean>(false);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
@@ -189,7 +189,7 @@ const ThoughtState = () => {
           <TiggleDisplay
             label="Think Rate"
             currentValue={thinkRate}
-            min={5}
+            min={1}
             max={40}
             onChange={(value: number) => setThinkRate(value)}
             interval={0.5}
