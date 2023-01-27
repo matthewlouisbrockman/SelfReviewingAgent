@@ -37,6 +37,7 @@ and this might help with some of the hallucination.
 ### Cool prompt stuff
 So the coolest thing about the prompt is hallucinated functions work _really really well_. Huge fan of using typescript interfaces to define specific outputs - see `linearPlanner.tsx` for the most interesting one i think.
 
+So it turns out these hallucinated functions aren't as resiliant as I thought they were and the inputs do matter a lot, I think there's some work to do in figuring out when they do what's expected and when they don't. It ended up needing examples (ick, few shots) and then overfitting to one or two so had to go with 3. I suppose drinking 10 red bulls was not the best idea in the world.
 
 #### important!
 I don't know typescript that well so this should be fun
