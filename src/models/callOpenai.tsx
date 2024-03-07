@@ -1,3 +1,4 @@
+import Anthropic from '@anthropic-ai/sdk';
 import axios from 'axios';
 
 interface OpenAIArgs {
@@ -12,22 +13,13 @@ interface OpenAIArgs {
 }
 
 let lastOpenAITime = -1;
+const provider = 'openai';
 
 // default key is OPENAI_API_KEY
 const DEFAULT_OPEANI_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+const DEFAULT_ANTHROPIC_KEY = process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY;
 
-export const callOpenAI = async ({
-  text,
-  key,
-  ...props
-}: OpenAIArgs): Promise<any> => {
-  // check if it's been less than 3 seconds since last call
-  if (lastOpenAITime > 0 && Date.now() - lastOpenAITime < 3000) {
-    console.log('Too many calls to OpenAI');
-    return { error: 'Too many calls to OpenAI' };
-  }
-  lastOpenAITime = Date.now();
-
+const actuallyCallOpenAI = async ({ text, key, ...props }: OpenAIArgs) => {
   try {
     const res = await axios.post(
       'https://api.openai.com/v1/chat/completions',
@@ -52,4 +44,45 @@ export const callOpenAI = async ({
     console.error(error);
     return { error };
   }
+};
+
+const actuallyCallAnthropic = async ({ text, key, ...props }: OpenAIArgs) => {
+  const anthropic = new Anthropic({
+    apiKey: key || DEFAULT_ANTHROPIC_KEY,
+  });
+
+  const msg = await anthropic.messages.create({
+    model: 'claude-3-opus-20240229',
+    max_tokens: 1000,
+    temperature: 0,
+    messages: [
+      {
+        role: 'user',
+        content: text,
+      },
+    ],
+    ...props,
+  });
+  console.log('msg', msg);
+  return msg;
+};
+
+export const callOpenAI = async ({
+  text,
+  key,
+  ...props
+}: OpenAIArgs): Promise<any> => {
+  // check if it's been less than 3 seconds since last call
+  if (lastOpenAITime > 0 && Date.now() - lastOpenAITime < 3000) {
+    console.log('Too many calls to OpenAI');
+    return { error: 'Too many calls to OpenAI' };
+  }
+  lastOpenAITime = Date.now();
+  if (provider === 'openai') {
+    return actuallyCallOpenAI({ text, key, ...props });
+  }
+  if (provider === 'anthropic') {
+    return actuallyCallAnthropic({ text, key, ...props });
+  }
+  return { error: 'No provider' };
 };
