@@ -31,7 +31,16 @@ export default async function handler(
       ],
       ...props,
     });
-    const responseText = msg?.content?.[0]?.text;
+    let responseText = msg?.content?.[0]?.text || '';
+
+    const lines = text.split('\n');
+    const lastLine = lines[lines.length - 1];
+
+    const index = responseText.indexOf(lastLine);
+    if (index > -1) {
+      responseText = responseText.slice(index + lastLine.length);
+    }
+
     res.status(200).json({ text: responseText });
   } catch (error) {
     console.error(error);
