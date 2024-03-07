@@ -22,7 +22,7 @@ export default async function handler(
       max_tokens: 1000,
       temperature: 0,
       system:
-        'You are a helpful AI that constantly evaluates yourself. You return valid JSON.',
+        'You are a helpful AI that completes whatever output the user started writing without repeating it.',
       messages: [
         {
           role: 'user',

@@ -145,16 +145,6 @@ const ThoughtState = () => {
   };
 
   useEffect(() => {
-    // call the /api/anthropic endpoint
-    const callAPI = async () => {
-      const response = await fetch('/api/anthropic');
-      const body = await response.json();
-      console.log('response from /api/anthropic', body);
-    };
-    callAPI();
-  }, []);
-
-  useEffect(() => {
     if (autoThink) setQueueAction(true);
   }, [autoThink]);
 
