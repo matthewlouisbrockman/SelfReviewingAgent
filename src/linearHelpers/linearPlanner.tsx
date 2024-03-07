@@ -85,7 +85,7 @@ export const linearPlanner = async (
   if (data.error) {
     return data;
   }
-  const outputText = `{"possibleActions": [${data.choices[0].text}`;
+  const outputText = `{"possibleActions": [${data.text}`;
   try {
     const output = JSON.parse(outputText);
     console.log('parsed: ', output);

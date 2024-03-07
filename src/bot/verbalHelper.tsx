@@ -53,7 +53,7 @@ export const generateEarlyState = async (idea: string): Promise<any> => {
   if (data.error) {
     return data;
   }
-  const outputText = data.choices[0].text;
+  const outputText = data.text;
   try {
     const output = JSON.parse(outputText);
     return { state: output, prompt: newPrompt };

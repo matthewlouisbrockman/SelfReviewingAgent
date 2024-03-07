@@ -45,7 +45,7 @@ export const linearSummarizer = async (
   if (data.error) {
     return data;
   }
-  const outputText = data.choices[0].text;
+  const outputText = data.text;
   return {
     thought: outputText,
     prompt: `${newPrompt}...\n${outputText}`,

@@ -30,15 +30,13 @@ export const callOpenAI = async ({
 
   try {
     const res = await axios.post(
-      'https://api.openai.com/v1/completions',
-      {
-        model: 'text-davinci-003',
-        prompt: text,
+      'https://api.openai.com/v1/chat/completions',
+      JSON.stringify({
+        model: 'gpt-4-0125-preview',
+        messages: [{ role: 'user', content: text }],
         max_tokens: 1500,
-        temperature: 0,
-        stop: ['\n>>'],
         ...props,
-      },
+      }),
       {
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +45,9 @@ export const callOpenAI = async ({
       }
     );
 
-    return res.data;
+    const response = res.data.choices[0].message.content;
+
+    return { text: response };
   } catch (error) {
     console.error(error);
     return { error };

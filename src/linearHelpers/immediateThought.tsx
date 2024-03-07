@@ -56,7 +56,7 @@ export const immediateThoughtResponse = async (
   if (data.error) {
     return data;
   }
-  const outputText = `I think the user just${data.choices[0].text}`;
+  const outputText = `I think the user just${data.text}`;
   return {
     thought: outputText,
     prompt: `${newPrompt}...\n${outputText}`,

@@ -57,7 +57,7 @@ export const linearExpander = async (
   if (data.error) {
     return data;
   }
-  const outputText = `I think${data.choices[0].text}`;
+  const outputText = `I think${data.text}`;
   return {
     thought: outputText,
     prompt: `${newPrompt}...\n${outputText}`,
