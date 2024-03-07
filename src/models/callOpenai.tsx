@@ -1,4 +1,3 @@
-import Anthropic from '@anthropic-ai/sdk';
 import axios from 'axios';
 
 interface OpenAIArgs {
@@ -53,24 +52,21 @@ const actuallyCallOpenAI = async ({ text, key, ...props }: OpenAIArgs) => {
 };
 
 const actuallyCallAnthropic = async ({ text, key, ...props }: OpenAIArgs) => {
-  const anthropic = new Anthropic({
-    apiKey: key || DEFAULT_ANTHROPIC_KEY,
-  });
+  // call /api/antrhopic on this server
+  try {
+    const res = await axios.post('/api/anthropic', {
+      text,
+      key: key || DEFAULT_ANTHROPIC_KEY,
+      ...props,
+    });
 
-  const msg = await anthropic.messages.create({
-    model: 'claude-3-opus-20240229',
-    max_tokens: 1000,
-    temperature: 0,
-    messages: [
-      {
-        role: 'user',
-        content: text,
-      },
-    ],
-    ...props,
-  });
-  console.log('msg', msg);
-  return msg;
+    const response = res.data;
+
+    return response;
+  } catch (error) {
+    console.error(error);
+    return { error };
+  }
 };
 
 export const callOpenAI = async ({
