@@ -7,6 +7,7 @@ import { Bot } from '../bot/botLinearState';
 import { TiggleDisplay } from '../components/ToggleDisplay';
 import { Chatbot } from '../discussion/ChatBox';
 import { ThoughtHistory } from '../discussion/ThoughtHistory';
+import { getProvider, setProvider } from '../models/callOpenai';
 
 const BodyContainer = styled.div`
   display: flex;
@@ -90,6 +91,11 @@ const ThoughtState = () => {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [taskQueued, setTaskQueued] = useState<boolean>(false);
   const [apikey, setApikey] = useState<string>('');
+  const [currentProvider, setCurrentProvider] = useState<string>(getProvider());
+
+  useEffect(() => {
+    setProvider(currentProvider);
+  }, [currentProvider]);
 
   const handleInputText = async (currentInput: string) => {
     if (!currentInput) return;
@@ -185,7 +191,15 @@ const ThoughtState = () => {
             placeholder="OPENAI API KEY HERE"
             onChange={(e) => setApikey(e.target.value)}
             value={apikey}
-          ></API_KEY_AREA>
+          />
+          <select
+            value={currentProvider}
+            onChange={(e) => setCurrentProvider(e.target.value)}
+          >
+            <option value="openai">OpenAI</option>
+            <option value="anthropic">Anthropic</option>
+          </select>
+
           <TiggleDisplay
             label="Think Rate"
             currentValue={thinkRate}

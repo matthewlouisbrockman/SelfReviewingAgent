@@ -13,7 +13,13 @@ interface OpenAIArgs {
 }
 
 let lastOpenAITime = -1;
-const provider = 'openai';
+let provider = 'openai';
+export const setProvider = (newProvider: string) => {
+  provider = newProvider;
+};
+export const getProvider = () => {
+  return provider;
+};
 
 // default key is OPENAI_API_KEY
 const DEFAULT_OPEANI_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
