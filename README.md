@@ -39,6 +39,10 @@ in v1, everything was just updating a single state, but it was hard to get it to
 }
 and this might help with some of the hallucination.
 
+###
+
+Edit 6 March - threw in GPT4 upgrade and it works out of the box now
+
 ### Cool prompt stuff
 So the coolest thing about the prompt is hallucinated functions work _really really well_. Huge fan of using typescript interfaces to define specific outputs - see `linearPlanner.tsx` for the most interesting one i think.
 
